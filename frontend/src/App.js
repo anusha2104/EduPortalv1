@@ -323,50 +323,25 @@ const App = () => {
     </div>
   );
   
-  const NotesPage = () => {
-    const [isNotesLoading, setIsNotesLoading] = useState(true);
+const NotesPage = () => {
+  const [isNotesLoading, setIsNotesLoading] = useState(true);
 
-    useEffect(() => {
-        if (user?.firebaseUid) {
-            fetch(`http://localhost:3001/api/notes/${user.firebaseUid}`)
-                .then(res => res.json())
-                .then(data => {
-                    setNotes(data);
-                    setIsNotesLoading(false);
-                })
-                .catch(err => {
-                    console.error("Failed to fetch notes:", err);
-                    setIsNotesLoading(false);
-                });
-        }
-    }, [user]);
+  useEffect(() => {
+    // Disabled: no fetching, just stop loading so UI shows
+    setIsNotesLoading(false);
+  }, [user]);
 
-    const handleNoteChange = (e) => {
-      const { name, value } = e.target;
-      setNoteDetails(prevDetails => ({ ...prevDetails, [name]: value }));
-    };
+  const handleNoteChange = (e) => {
+    // Disabled: do nothing (keeps UI only)
+    void e;
+    return;
+  };
 
-    const handleSaveNote = async () => {
-      if (noteDetails.content.trim() && noteDetails.subject.trim() && noteDetails.chapter.trim()) {
-        const noteToSend = { ...noteDetails, firebaseUid: user.firebaseUid };
-        try {
-          const response = await fetch('http://localhost:3001/api/notes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(noteToSend),
-          });
-          if (!response.ok) throw new Error('Failed to save the note');
-          const savedNote = await response.json();
-          setNotes(prevNotes => [savedNote, ...prevNotes]);
-          setNoteDetails({ subject: '', chapter: '', content: '' });
-          addPoints(1, 'Creating a note');
-          setNoteSavedMessage(true);
-          setTimeout(() => setNoteSavedMessage(false), 3000);
-        } catch (error) {
-          console.error("Error saving note:", error);
-        }
-      }
-    };
+  const handleSaveNote = async () => {
+    // Disabled: do nothing
+    return;
+  };
+
 
     return (
       <div className="space-y-8">
